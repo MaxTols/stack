@@ -25,17 +25,34 @@ class Stack:
         return size
 
 
-def balanced(s):
+bracket_dict = dict()
+bracket_dict['('], bracket_dict['['], bracket_dict['{'] = ')', ']', '}'
+
+
+def balance(string):
     stack = Stack()
-    for c in s:
-        if c in '([{':
-            stack.push(c)
-        elif c in '}])':
+    for elem in string:
+        if elem in [key for key, value in bracket_dict.items()]:
+            stack.push(elem)
+        elif elem in [value for key, value in bracket_dict.items()]:
+            last_elem = stack.peek()
             if stack.is_empty():
                 return False
-            else:
+            elif elem == bracket_dict[last_elem]:
                 stack.pop()
+            else:
+                return False
+        else:
+            return False
     return stack.is_empty()
 
 
-print(balanced(input('Enter text: ')))
+# print(balance('(((([{}]))))'))
+# print(balance('[([])((([[[]]])))]{()}'))
+# print(balance('{{[()]}}'))
+
+# print(balance('}{}'))
+# print(balance('{{[(])]}}'))
+# print(balance('[[{())}]'))
+
+print(balance(input('Enter string: ')))
